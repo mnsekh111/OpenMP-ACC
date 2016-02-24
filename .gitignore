@@ -9,3 +9,7 @@
 *.obj
 *.tlog
 *.lastbuildstate
+*.suo
+*.idb
+*.vcxproj*
+*.lastdb
