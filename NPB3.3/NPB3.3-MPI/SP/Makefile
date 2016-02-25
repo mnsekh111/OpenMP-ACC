@@ -9,7 +9,7 @@ OBJS = sp.o make_set.o initialize.o exact_solution.o exact_rhs.o \
        set_constants.o adi.o define.o copy_faces.o rhs.o      \
        lhsx.o lhsy.o lhsz.o x_solve.o ninvr.o y_solve.o pinvr.o    \
        z_solve.o tzetar.o add.o txinvr.o error.o verify.o setup_mpi.o \
-       ${COMMON}/print_results.o ${COMMON}/timers.o
+       ${COMMON}/print_results.o ${COMMON}/timers.o pmpi.o
 
 include ../sys/make.common
 
@@ -53,7 +53,8 @@ txinvr.o:         txinvr.f  header.h npbparams.h
 error.o:          error.f  header.h npbparams.h  mpinpb.h
 verify.o:         verify.f  header.h npbparams.h  mpinpb.h
 setup_mpi.o:      setup_mpi.f mpinpb.h npbparams.h 
-
+pmpi.o:		  pmpi.c
+		  ${CCOMPILE} pmpi.c
 
 clean:
 	- rm -f *.o *~ mputil*

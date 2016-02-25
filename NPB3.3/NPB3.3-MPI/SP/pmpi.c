@@ -14,7 +14,7 @@ int taskId,totalTasks;
 int * myStats;
 int * allStats;
 
-int MPI_Init(int *argc, char ***argv[]){
+int MPI_Init(int *argc, char ***argv){
 	
 	int i,j,retVal;
 	//Calling the real function
@@ -43,7 +43,7 @@ int MPI_Isend( void *buf, int count, MPI_Datatype datatype, int dest, int tag,
                       MPI_Comm comm, MPI_Request *request ){
 
 	myStats[dest]++;
-	return PMPI_Isend(buff,count,datatype,dest,tag,comm,request);
+	return PMPI_Isend(buf,count,datatype,dest,tag,comm,request);
 }
 
 int MPI_Finalize(void){
@@ -51,10 +51,10 @@ int MPI_Finalize(void){
 	int i,j;
 	PMPI_Gather(allStats,totalTasks,MPI_INT,myStats,totalTasks,MPI_INT,ROOT,MPI_COMM_WORLD);
 	if(taskId == ROOT){
-		fp = fopen("matrix.data","w");
+		FILE *fp = fopen("matrix.data","w");
 		for(i=0;i<totalTasks;i++){
 			for(j=0;j<totalTasks;j++){
-				fprint(fp,"%d ",allStats[i*totalTasks+j]);
+				fprintf(fp,"%d ",allStats[i*totalTasks+j]);
 			}
 			fprintf(fp,"\n");	
 		}
