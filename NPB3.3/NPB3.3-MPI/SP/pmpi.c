@@ -31,7 +31,7 @@ int MPI_Init(int *argc, char ***argv){
 	myStats = (int *) calloc(totalTasks, sizeof(int));
 	
 	if(taskId == ROOT){
-		allStats = (int *)malloc(totalTasks * totalTasks* sizeof(int));
+		allStats = (int *)calloc(totalTasks * totalTasks, sizeof(int));
 	}
 	
 	return retVal;	
@@ -49,7 +49,7 @@ int MPI_Isend( void *buf, int count, MPI_Datatype datatype, int dest, int tag,
 int MPI_Finalize(void){
 
 	int i,j;
-	PMPI_Gather(allStats,totalTasks,MPI_INT,myStats,totalTasks,MPI_INT,ROOT,MPI_COMM_WORLD);
+	PMPI_Gather(myStats,totalTasks,MPI_INT,allStats,totalTasks,MPI_INT,ROOT,MPI_COMM_WORLD);
 	if(taskId == ROOT){
 		FILE *fp = fopen("matrix.data","w");
 		for(i=0;i<totalTasks;i++){
@@ -61,6 +61,6 @@ int MPI_Finalize(void){
 		fclose(fp);
 	}
 
-	PMPI_Finalize();
+	return PMPI_Finalize();
 }
 
