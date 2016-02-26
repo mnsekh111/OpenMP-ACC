@@ -208,8 +208,12 @@ void run_sim(double *u, double *u0, double *u1, double *pebbles, int n, double h
 
     /* run a central finite differencing scheme to solve
      * the wave equation in 2D */
+    //#pragma omp parallel for schedule(static) private(j) num_threads(nthreads)
+    //#pragma omp parallel for schedule(dynamic) private(j) num_threads(nthreads)
     for( i = 0; i < n; i++)
     {
+      //#pragma omp parallel for schedule(static) num_threads(nthreads)
+      #pragma omp parallel for schedule(dynamic) num_threads(nthreads)
       for( j = 0; j < n; j++)
       {
         /* impose the u|_s = 0 boundary conditions */
@@ -231,8 +235,12 @@ void run_sim(double *u, double *u0, double *u1, double *pebbles, int n, double h
     }
 
     /* update the calculation arrays for the next time step */
+    //#pragma omp parallel for schedule(static) private(j) num_threads(nthreads)
+    //#pragma omp parallel for schedule(dynamic) private(j) num_threads(nthreads)
     for( i = 0; i < n; i++ )
     {
+    // #pragma omp parallel for schedule(static) private(j) num_threads(nthreads)
+    //#pragma omp parallel for schedule(dynamic) private(j) num_threads(nthreads)
       for ( j = 0; j < n; j++ )
       {
         uo[i][j] = uc[i][j];
