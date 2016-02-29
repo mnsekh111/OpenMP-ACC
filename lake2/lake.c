@@ -224,7 +224,7 @@ run_sim (double *u, double *u0, double *u1, double *pebbles, int n, double h,
  * needed outside of device once processing is completed. Thus it is the only variable in copy. All other variables need to be just copied in and we no
  * need to
  */
-#pragma acc data copy(un) copyin(uc,uo,pebs,dt,h,t,end_time)
+//#pragma acc data copy(un) copyin(uc,uo,pebs,dt,h,t,end_time)
   while (1)
     {
 
