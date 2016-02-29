@@ -218,6 +218,12 @@ run_sim (double *u, double *u0, double *u1, double *pebbles, int n, double h,
 
   /* loop until time >= end_time */
 
+/*
+ * The data block manages which data to copied in out of the device
+ * copy - allocates space and copies the values into device and then copies out once computation is done. Here un array is the only array that is
+ * needed outside of device once processing is completed. Thus it is the only variable in copy. All other variables need to be just copied in and we no
+ * need to
+ */
 #pragma acc data copy(un) copyin(uc,uo,pebs,dt,h,t,end_time)
   while (1)
     {
@@ -226,6 +232,12 @@ run_sim (double *u, double *u0, double *u1, double *pebbles, int n, double h,
        * the wave equation in 2D */
       //#pragma omp parallel for schedule(static) private(j) num_threads(nthreads)
       //#pragma omp parallel for schedule(dynamic) private(j) num_threads(nthreads)
+
+
+      /*
+       * Kernels delegates the work of optimizing the loops to the compilers which is an advantage over using parallel
+       * This loop is divided among different gangs
+       */
 #pragma acc kernels loop
       for (i = 0; i < n; i++)
 	{
